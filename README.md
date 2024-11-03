@@ -15,7 +15,7 @@ Make sure that the following software is installed:
 
 ## Fork to your github account
 Go to github.com, create a new account or login.
-- Fork this repo (https://github.com/ibuenuel/w3schools-database.git)
+- Fork this repo (https://github.com/Boombaboombi/WIHFProjekt.git)
 
 Now you have a repository w3schools-database in your github account.
 Clone that with:
