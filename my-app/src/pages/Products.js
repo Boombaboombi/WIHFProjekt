@@ -212,7 +212,94 @@ function ProductList() {
           </button>
         </div>
       </div>
-
+      <button 
+        className="bg-blue-800 text-white px-4 py-2 rounded mb-4"
+        onClick={() => setEditableProductId('new')}
+      >
+        Add New Product
+      </button>
+      {editableProductId === 'new' && (
+        <div className="mb-4 p-4 border rounded">
+          <input
+            className="border p-2 mb-2 w-full"
+            type="text"
+            placeholder="Product Name"
+            value={editedProduct['new']?.ProductName || ''}
+            onChange={(e) => handleInputChange('new', 'ProductName', e.target.value)}
+          />
+          <input
+            className="border p-2 mb-2 w-full"
+            type="text"
+            placeholder="Price"
+            value={editedProduct['new']?.Price || ''}
+            onChange={(e) => handleInputChange('new', 'Price', e.target.value)}
+          />
+          <input
+            className="border p-2 mb-2 w-full"
+            type="text"
+            placeholder="Unit"
+            value={editedProduct['new']?.Unit || ''}
+            onChange={(e) => handleInputChange('new', 'Unit', e.target.value)}
+          />
+          <select
+            className="border p-2 mb-2 w-full"
+            value={editedProduct['new']?.SupplierID || ''}
+            onChange={(e) => handleInputChange('new', 'SupplierID', e.target.value)}
+          >
+            <option value="">Select Supplier</option>
+            {suppliers.map(supplier => (
+              <option key={supplier.SupplierID} value={supplier.SupplierID}>
+                {supplier.SupplierName}
+              </option>
+            ))}
+          </select>
+          <select
+            className="border p-2 mb-2 w-full"
+            value={editedProduct['new']?.CategoryID || ''}
+            onChange={(e) => handleInputChange('new', 'CategoryID', e.target.value)}
+          >
+            <option value="">Select Category</option>
+            {categories.map(category => (
+              <option key={category.CategoryID} value={category.CategoryID}>
+                {category.CategoryName}
+              </option>
+            ))}
+          </select>
+          <div className="flex space-x-2">
+            <button
+              className="bg-green-500 text-white px-4 py-2 rounded"
+              onClick={() => {
+                const newProduct = editedProduct['new'];
+                fetch(`${api}/products`, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(newProduct),
+                })
+                  .then(response => response.json())
+                  .then(data => {
+                    setProducts([...products, data]);
+                    setEditableProductId(null);
+                    setEditedProduct(prev => {
+                      const { new: _, ...rest } = prev;
+                      return rest;
+                    });
+                    window.location.reload();
+                  });
+              }}
+            >
+              Save
+            </button>
+            <button 
+              className="bg-red-500 text-white px-4 py-2 rounded"
+              onClick={() => setEditableProductId(null)}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
       <table className="min-w-full bg-white border">
         <thead>
           <tr>
